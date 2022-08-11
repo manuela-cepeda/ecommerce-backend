@@ -59,6 +59,9 @@ router.delete('/:cid/products/:pid', async (req,res)=>{
 })
 
 
+router.get('/*:params',(req,res)=>{
+    res.send({ error : -2, descripcion: `route '/api/products/${req.params[0]}' method 'GET' no implemented`})
+})
 
 
 

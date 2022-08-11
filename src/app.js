@@ -3,7 +3,7 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import __dirname from "./utils.js";
 
- let admin = false
+ let admin = true
 
 //inicializamos express
 const app = express();

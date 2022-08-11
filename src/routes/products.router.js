@@ -1,22 +1,19 @@
 import { Router } from "express";
 import  {ProductManager}  from '../managers/ProductManager.js';
-import {uploader} from '../utils.js'
 import admin from '../app.js'
 
 const router = Router();
 const productService=  new ProductManager();
 
-router.post('/', uploader.single('thumbnail'), async (req,res)=>{
+router.post('/',  async (req,res)=>{
     if(!admin)  return res.status(401).send({error: "method 'POST' no authorized"})
-    let {title, price, thumbnail} = req.body;
-    //no uso en este desafio el uploader (uso url)
-    // if(!req.file) return res.status(500).send({status:"error", error:"couldn't upload file"})
-    if(!title || !price) return res.status(400).send({error:"invalid"});
+    let {title, price, stock, thumbnail} = req.body;
+    if(!title || !price || !stock) return res.status(400).send({error:"invalid"});
     let newProduct = {
         title,
         price,
-        thumbnail
-        // thumbnail: req.file.filename,
+        thumbnail,
+        stock
     }
     await productService.save(newProduct)
     res.send({status:'success', message: 'product added'})
@@ -57,6 +54,10 @@ router.delete('/:id',  async (req,res)=>{
     await productService.deleteById(id)
     res.send({status:'success', message: 'product deleted'})
    
+})
+
+router.get('/*:params',(req,res)=>{
+    res.send({ error : -2, descripcion: `route '/api/products/${req.params[0]}' method 'GET' no implemented`})
 })
 
 

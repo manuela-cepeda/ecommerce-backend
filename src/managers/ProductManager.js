@@ -21,20 +21,22 @@ export class ProductManager {
         }
     }
 
-    save= async(newData)  =>{  
+    save= async(product)  =>{  
         try{
             const data = await this.getAll();
+            product.timestamp = Date.now().toLocaleString()
+            product.code = this.codeGenerator(data)
             if (data.length === 0 ) {
-                newData.id = 1;
-                data.push(newData);
+                product.id = 1;
+                data.push(product);
                 await fs.promises.writeFile(path, JSON.stringify(data, null, '\t'));               
             } else {   
-                newData.id =  data[data.length-1].id+1 ;
-                data.push(newData);
+                product.id =  data[data.length-1].id+1 ;
+                data.push(product);
                 await fs.promises.writeFile(path, JSON.stringify(data, null, '\t'));
                 
             }
-            return newData.id
+            return product.id
         }
         catch(err){
             console.log(`Cannot write file: ${err}`)
@@ -89,6 +91,14 @@ export class ProductManager {
         return arr;
     }
    
+
+    codeGenerator =  (products) => {
+        let code = ''
+        do {
+            code = Math.random().toString(36).substring(5)
+        } while (products.find(item => item.code === code))
+        return code
+    }
 } 
 
 
