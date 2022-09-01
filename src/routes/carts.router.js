@@ -1,18 +1,18 @@
 import { Router } from "express";
-import  {CartManager}  from '../managers/CartManager.js';
-import  {ProductManager}  from '../managers/ProductManager.js';
+import services from "../dao/index.js";
+// import  {ProductManager}  from '../managers/ProductManager.js';
 
 const router = Router();
-const cartService=  new CartManager();
-const productService =  new ProductManager();
 
-// router.get('/', async (req,res)=>{  
-//     let carts = await cartService.getAll(); 
-//     res.send({carts})
-// })
+// const productservices =  new ProductManager();
+
+router.get('/', async (req,res)=>{  
+    let carts = await services.cartsService.getAll(); 
+    res.send({carts})
+})
 
 router.post('/',  async (req,res)=>{  
-    let cartCid = await cartService.createCart()
+    let cartCid = await services.cartsService.createCart()
     res.send({status:'success', message: cartCid })    
   }) 
 
@@ -20,7 +20,7 @@ router.post('/',  async (req,res)=>{
     let cid = parseInt(req.params.cid)
     if(isNaN(cid)) return res.status(400).send({error:"invalid value"});
     // if(id<1 || id>products.length ) return res.status(400).send({error:"producto no encontrado"}); no funciona cuando borro elementos por el medio   
-    await cartService.deleteById(cid)
+    await services.cartsService.deleteById(cid)
     res.send({status:'success', message: 'product deleted'})
    
 })
@@ -28,9 +28,9 @@ router.post('/',  async (req,res)=>{
 router.get('/:cid/products',  async (req,res)=>{
     let cid = parseInt(req.params.cid)
     if(isNaN(cid)) return res.status(400).send({error:"invalid value"});    
-    let cart = await cartService.getById(cid)
+    let cart = await services.cartsService.getById(cid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"});
-    let products = await cartService.getProductsCart(cid)        
+    let products = await services.cartsService.getProductsCart(cid)        
     res.send({products})
 })
 
@@ -38,9 +38,9 @@ router.post('/:cid/products',  async (req,res)=>{
     let cid = parseInt(req.params.cid)
     const {pid, qty} = req.body;
     if(!pid || !qty) return res.status(400).send({error:"invalid"});     
-    let cart = await cartService.getById(cid)
+    let cart = await services.cartsService.getById(cid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"});        
-    await cartService.addProductCart(cid, parseInt(pid), parseInt(qty))
+    await services.cartsService.addProductCart(cid, parseInt(pid), parseInt(qty))
     res.send({status:'success',message:'successfully saved into the cart'}) 
 }) 
 
@@ -48,11 +48,11 @@ router.post('/:cid/products',  async (req,res)=>{
 router.delete('/:cid/products/:pid', async (req,res)=>{
     let cid = parseInt(req.params.cid)
     let pid = parseInt(req.params.pid)
-    let cart = await cartService.getById(cid)
-    let product = await productService.getById(pid)
+    let cart = await services.cartsService.getById(cid)
+    // let product = await productservices.getById(pid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"})   
     if(product == undefined ) return res.status(400).send({error:"product doesn't exist"})
-    await cartService.deleteProductCart(cid,pid)
+    await services.cartsService.deleteProductCart(cid,pid)
     res.send({status:'success',message:'successfully deleted from cart'})
  
 

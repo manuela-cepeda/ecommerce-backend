@@ -3,6 +3,8 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import __dirname from "./utils.js";
 
+
+
  let admin = true
 
 //inicializamos express
@@ -21,4 +23,8 @@ app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
 
+
+
 export default admin
+
+
