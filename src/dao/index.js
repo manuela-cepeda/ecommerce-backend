@@ -1,13 +1,13 @@
-const persistence = "MONGO";
+const persistence = "MEMORY";
 let productsService;
 let cartsService;
 switch(persistence){
     //import dinamico
     case "MEMORY":
         const {default: MemProducts} = await import ('./MemoryDAO/Products.js');
-        // const {default: MemCarts} = await import ('./MemoryDAO/Carts.js');
+        const {default: MemCarts} = await import ('./MemoryDAO/Carts.js');
        productsService = new MemProducts();
-    //    cartssService = new MemCarts();
+       cartsService = new MemCarts();
         break;
     case "MONGO":
         const {default: MongoProducts} = await import ('./MongoDAO/Products.js');
