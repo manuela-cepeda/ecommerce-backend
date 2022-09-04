@@ -17,14 +17,13 @@ export default class FilesContainer {
         }
         catch(err){
             console.log(`Cannot read file: ${err}`)
-           
         }
     }
 
     getById= async(id) => {
         try {
             const data = await this.getAll();
-            return data.find((element) => element.id == id);
+            return data.find((item) => item.id == parseInt(id));
             
         } catch (err) {
             console.log(`Cannot find by id: ${err}`)
@@ -34,13 +33,35 @@ export default class FilesContainer {
     deleteById= async(id) => {
         try {
             const data = await this.getAll();
-            const newArray = data.filter((element) => element.id != id);
+            let findedItem = data.find((item) => item.id == parseInt(id));
+            const newArray = data.filter((item) => item.id != parseInt(id));
             await fs.promises.writeFile(this.path, JSON.stringify(newArray, null, '\t'));
-            
+            if (findedItem) {
+                await fs.promises.writeFile(this.path, JSON.stringify(newItems, null, "\t"));
+                console.log(`Se ha eliminado el siguiente item: ${findedItem}`);
+              } else {
+                console.log(`El id "${id}" no existe!`);
+              }
         } catch (err) {
             console.log(`Cannot delete by id: ${err}`)
+            throw new Error
         }
     }
 
+    save = async (obj) => {
+        let data = await this.getAll();
+        data.push(obj);
+        await fs.promises.writeFile(this.path, JSON.stringify(data, null, "\t"));
+        return obj.id;
+      };
+
+    update = async (obj) => {
+    let data = await this.getAll();
+    obj.id = parseInt( obj.id)
+    let index = data.findIndex((item) => item.id === obj.id);
+    data[index] = obj;
+    await fs.promises.writeFile(this.path, JSON.stringify(data, null, "\t"));
+    return true;
+    };
    
 }

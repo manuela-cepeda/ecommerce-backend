@@ -14,5 +14,13 @@ const storage = multer.diskStorage({
     }
 })
 
+export function  codeGenerator  (products)  {
+    let code = ''
+    do {
+        code = Math.random().toString(36).substring(5)
+    } while (products.find(item => item.code === code))
+    return code
+}
+
 export const uploader = multer({storage})
 export default __dirname;

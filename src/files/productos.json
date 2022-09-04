@@ -18,28 +18,10 @@
 		"id": 3
 	},
 	{
-		"title": 1,
+		"title": "cambdrrrr",
 		"price": 1234,
 		"stock": 10,
-		"timestamp": "1,660,256,267,075",
-		"code": "xstemj8j",
+		"thumbnail": "hoSla.png",
 		"id": 4
-	},
-	{
-		"title": "eee",
-		"price": 1234,
-		"stock": 10,
-		"timestamp": "1,660,256,298,360",
-		"code": "6l3ggc0h",
-		"id": 5
-	},
-	{
-		"title": "hoja5",
-		"price": 1234,
-		"stock": 10,
-		"code": "eee30",
-		"thumbnail": "hola.png",
-		"timestamp": "1,662,064,403,153",
-		"id": 6
 	}
 ]

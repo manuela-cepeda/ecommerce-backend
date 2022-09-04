@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { codeGenerator } from "../../utils.js";
 import MongoDBContainer from "./MongoContainer.js";
 
 const collection = 'products';
@@ -13,5 +14,11 @@ const productsSchema = mongoose.Schema ({
 export default class Products extends MongoDBContainer{
     constructor(){
         super(collection,productsSchema)
+    }
+
+    createProduct = async(obj)  =>{  
+        const data = await this.getAll();
+        obj.code = codeGenerator(data)
+        this.save(obj)
     }
 }

@@ -1,35 +1,31 @@
-import mongoose from "mongoose";
-import MongoDBContainer from "./MongoContainer.js";
-// import services from "../../dao/index.js";
+import MemoryContainer from "./MemoryContainer.js";
 
+export default class Carts extends MemoryContainer {
 
-const collection = 'carts';
-const cartsSchema = mongoose.Schema ({
-    products: {type: Array, require: true},
-},{timestamps:true})
-
-export default class Carts extends MongoDBContainer{
-    constructor(){
-        super(collection,cartsSchema)
-    }
-        
     createCart = async ()=>{
+        let data =  this.getAll()
         let cart={}
+        if (data.length === 0) {
+            cart.id = 1
+            cart.timeStamp = Date.now().toLocaleString()
+        }else{
+            cart.id= data[data.length - 1].id + 1
+            cart.timeStamp = Date.now().toLocaleString()
+        }
         cart.products = []
         this.save(cart)
-        
+       
     }
 
     
-    addProductCart = async (cid, pid, qty) => {
+    addProductCart =  (cid, pid, qty) => {
         try {
-            let cart = await this.getById(cid);
-            if(cart.products?.some(e =>e.pid === pid)){                    
+            let cart =  this.getById(parseInt(cid))
+            if(cart.products.some(e =>e.pid === parseInt(pid))){                    
                 for (const item of cart.products){
                     if(item.pid === pid){
                         let condition = (item.qty += qty)                        
-                            item.qty = condition
-                        
+                        item.qty = condition
                     }
                 }
             }else{
@@ -39,28 +35,26 @@ export default class Carts extends MongoDBContainer{
                     cart.products.push({pid, qty})
                 }
             }
-            await this.update(cart)
+             this.update( cart)
         } catch (error) {
             console.log(`Cannot add products: ${error}`)
         }
         
     }
 
-    deleteProductCart = async (cid, pid) => {
-        let cart = await this.getById(cid);
+    deleteProductCart =  (cid, pid) => {
+        let cart =  this.getById(parseInt(cid))
         let newCartProduts = []
-        if(cart.products?.some(e =>e.pid === pid)){
+        if(cart.products.some(e =>e.pid === parseInt(pid))){
             for (const item of cart.products){
-                if(item.pid === pid){
+                if(item.pid === parseInt(pid)){
                     continue
                 }
                 newCartProduts.push(item)
             }
         }
         cart.products = newCartProduts
-        await this.update(cart)
+         this.update(cart)
         
     }
-
-   
 }
