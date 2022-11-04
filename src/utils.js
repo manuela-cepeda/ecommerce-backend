@@ -1,6 +1,9 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer'
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,5 +25,17 @@ export function  codeGenerator  (products)  {
     return code
 }
 
+// nodemailer 
+export const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: 'manulcepeda@gmail.com',
+        pass: 'ugmhdkwrikwefqir'
+    }
+});
+
+export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
 export const uploader = multer({storage})
 export default __dirname;

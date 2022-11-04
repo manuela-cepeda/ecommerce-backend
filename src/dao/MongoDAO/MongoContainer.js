@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import config from '../../config/process.config.js'
 
-mongoose.connect('mongodb+srv://coderuser:ir8sc84OBJ89TNbJ@cluster0.awzpo36.mongodb.net/ecommerce?retryWrites=true&w=majority'
+mongoose.connect(config.mongo.MONGO_URL
 , err=>{
     if (err) throw new Error(`error conexion mongo atlas ${err}`)
     console.log('base conectada')

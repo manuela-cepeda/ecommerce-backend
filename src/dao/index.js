@@ -1,6 +1,7 @@
-const persistence = "MEMORY";
+const persistence = "MONGO";
 let productsService;
 let cartsService;
+let userService;
 switch(persistence){
     //import dinamico
     case "MEMORY":
@@ -12,8 +13,10 @@ switch(persistence){
     case "MONGO":
         const {default: MongoProducts} = await import ('./MongoDAO/Products.js');
         const {default: MongoCarts} = await import ('./MongoDAO/Carts.js');
+        const {default: MongoUser} = await import ('./MongoDAO/User.js');
         productsService = new MongoProducts();
         cartsService = new MongoCarts();
+        userService = new MongoUser();
          break;
      case "FILES":
         const {default: FilesProducts} = await import ('./FilesDAO/Products.js');
@@ -26,7 +29,8 @@ switch(persistence){
 
 const services = {
     productsService,
-    cartsService
+    cartsService,
+    userService
 }
 
 export default services
