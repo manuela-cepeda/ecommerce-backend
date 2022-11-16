@@ -41,6 +41,10 @@ export default class MongoDBContainer{
         return results;
     };
   
+    getByEmail = async (email) => {
+        let results = await this.model.findOne({email: email});
+        return results;
+    };
 
    
   

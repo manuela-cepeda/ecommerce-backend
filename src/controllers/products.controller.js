@@ -1,5 +1,5 @@
 import admin from '../app.js'
-import { productsService } from "../services/index.js";
+import { productsService } from "../services/services.js";
 
 const getProducts =  async(req,res)=> {
     let results = await productsService.getAll();

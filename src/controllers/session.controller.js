@@ -1,24 +1,27 @@
+import { UserPresenterDTO } from "../dao/DTO/UserDTO.js";
 import { transporter } from "../utils.js";
 
 const register = async (req, res) => {
-
-    let result = await transporter.sendMail({
+    console.log(req.user)
+    const user = new UserPresenterDTO(req.user);
+     await transporter.sendMail({
         from: 'ecotienda',
         to: 'manulcepeda@gmail.com', 
         subject:'nuevo registro',
         //text: //texto plano
-        html:  `<div>Nombre: ${ req.user.name} </div>
-        <div>Edad: ${ req.user.age} </div>
-         <div>Dirección: ${ req.user.adress} </div>
-        <div>Email: ${ req.user.email} </div>
-       <div>Tel: ${ req.user.tel} </div>`
+        html:  `<div>Nombre: ${ user.fullName} </div>
+        <div>Edad: ${ user.age} </div>
+         <div>Dirección: ${ user.adress} </div>
+        <div>Email: ${ user.emsail} </div>
+       <div>Tel: ${ user.tel} </div>`
     
     })
-
+      
      res.send({success: true, payload:  req.user})
 }
 
 const registerFail = (req,res)=>{
+
     res.status(500).send({status:'error', error:"error"})
 }
 

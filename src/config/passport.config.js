@@ -1,7 +1,7 @@
 import passport from 'passport'
 import local from 'passport-local'
 import { createHash, isValidPassword } from "../utils.js";
-import { usersService } from '../services/index.js';
+import { usersService } from "../services/services.js";
 
 
 const LocalStrategy = local.Strategy;
@@ -11,12 +11,14 @@ const initializePassport = () => {
     passport.use('register', new LocalStrategy({passReqToCallback: true, usernameField: 'email'}, 
     async(req, email, password, done)=>{
         try {
-            const {name, age, adress, tel } = req.body
-        if(!name || !email || !password || !age || !adress || !tel) return done (null, false, {message:"incomplete values"})
-        let user = await usersService.getByEmail(email)
-        if(user) return  done (null, false, {message:"user alredy exists"})
+            const {name, lastName, age, adress, tel } = req.body
+           
+        if(!name || !lastName || !email || !password || !age || !adress || !tel) return done (null, false, {message:"incomplete values"})
+         let user = await usersService.getByEmail(email) 
+         if(user) return  done (null, false, {message:"user alredy exists"})
         const newUser = { 
-            name,      
+            name,  
+            lastName,    
             email,
             tel,
             adress,
@@ -24,6 +26,7 @@ const initializePassport = () => {
             password: createHash(password)
         }
         let result = await usersService.save(newUser)
+        
         return done(null, result)
         } catch (error) {
             done(error)
@@ -43,7 +46,7 @@ const initializePassport = () => {
         done(null, user._id)
     })
     passport.deserializeUser(async(id,done)=>{
-        let result = await usersService.getByEmail(id)
+        let result = await usersService.getById(id)
       
         return done (null, result)
     })

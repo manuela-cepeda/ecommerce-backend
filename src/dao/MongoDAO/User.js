@@ -6,6 +6,7 @@ const collection = 'registeredUsers';
 const userSchema = mongoose.Schema ({
     email: {type: String, require: true}, 
     name:  {type: String, require: true}, 
+    lastName:  {type: String, require: true}, 
     adress:  {type: String, require: true}, 
     age:  {type: String, require: true}, 
     tel:  {type: String, require: true}, 
@@ -18,10 +19,7 @@ export default class User extends MongoDBContainer{
         super(collection,userSchema)
     }
     
-    getByEmail = async (email) => {
-        let results = await this.model.findOne({email: email});
-        return results;
-    };
+ 
     
   
 }

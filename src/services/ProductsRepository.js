@@ -1,6 +1,6 @@
 import { codeGenerator } from "../utils.js";
 
-export default class ProductsServices {
+export default class ProductsRepository {
     constructor(dao){
         this.dao = dao;
     }

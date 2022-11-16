@@ -1,4 +1,4 @@
-import { cartsService } from "../services/index.js";
+import { cartsService } from "../services/services.js";
 
 
 const getCarts = async(req,res)=>{

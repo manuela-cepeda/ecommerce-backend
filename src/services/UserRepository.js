@@ -1,5 +1,5 @@
 
-export default class UserService {
+export default class UserRepository {
     constructor(dao){
         this.dao = dao;
     }
@@ -7,6 +7,9 @@ export default class UserService {
     save = async (user) => {
         return this.dao.save(user)
     }
+   getById= async (id) => {
+        return this.dao.getById(id)
+    };
     
     getByEmail = async (email) => {
         return this.dao.getByEmail(email)
