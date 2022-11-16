@@ -21,9 +21,4 @@ export default class Products extends MongoDBContainer{
         super(collection,productsSchema)
     }
 
-    createProduct = async(obj)  =>{  
-        const data = await this.getAll();
-        obj.code = codeGenerator(data)
-        this.save(obj)
-    }
 }
