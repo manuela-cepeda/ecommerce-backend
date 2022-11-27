@@ -15,8 +15,8 @@ const getProducts =  async(req,res)=> {
 
  const createProduct = async(req,res)=> {   
     if(!admin)  return res.status(401).send({error: "method 'POST' no authorized"})
-     await productsService.createProduct(req.body);
-    res.send({status:'success', message: 'product added'})
+    const result = await productsService.createProduct(req.body);
+    res.send(result)
  }
 
  const deleteProductById =  async (req,res)=>{

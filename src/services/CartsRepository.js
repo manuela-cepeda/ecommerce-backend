@@ -19,7 +19,7 @@ export default class CartsRepository {
     createCart = async ()=>{
         let cart={}
         cart.products = []
-        this.dao.save(cart)
+        return this.dao.save(cart)
         
     }
 

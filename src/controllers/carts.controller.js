@@ -1,4 +1,4 @@
-import { cartsService } from "../services/services.js";
+import { cartsService, productsService } from "../services/services.js";
 
 
 const getCarts = async(req,res)=>{
@@ -15,7 +15,7 @@ const getCarts = async(req,res)=>{
     for(const item of cart.products){
         productsArr.push(
             {
-            product:await services.productsService.getById(item?.pid),
+            product:await productsService.getById(item?.pid),
             qty:item?.qty
             }
         )
@@ -24,8 +24,8 @@ const getCarts = async(req,res)=>{
 }
 
 const createCart =  async (req,res)=>{  
-    let cartCid = await cartsService.createCart()
-    res.send({status:'success', message: cartCid })    
+    let cart = await cartsService.createCart()
+    res.send(cart)    
 }
 
 const addProductCart =  async (req,res)=>{  
@@ -34,7 +34,7 @@ const addProductCart =  async (req,res)=>{
     if(!pid || !qty) return res.status(400).send({error:"invalid"});     
     let cart = await cartsService.getById(cid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"});  
-     let product = await services.productsService.getById(pid)
+     let product = await productsService.getById(pid)
     if(product ===undefined) return res.status(400).send({error:"product doesn't exist"});  
     await cartsService.addProductCart(cid, pid, qty)
     res.send({status:'success',message:'successfully saved into the cart'}) 

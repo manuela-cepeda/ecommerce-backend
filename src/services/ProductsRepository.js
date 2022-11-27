@@ -9,7 +9,7 @@ export default class ProductsRepository {
     createProduct = async(obj)  =>{  
         const data = await this.dao.getAll();
         obj.code = codeGenerator(data)
-        this.dao.save(obj)
+       return this.dao.save(obj)
     }
 
     getAll = async () => {
