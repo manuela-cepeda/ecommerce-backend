@@ -1,0 +1,46 @@
+components:
+  schemas:
+    Product:
+      Type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongo
+        name:
+          type: String
+          description: Nombre del producto
+        size:
+          type: String
+          description: Tamaño del producto
+        price:
+          tpye: Number
+          description: Precio del producto
+        stock:
+          tpye: Number
+          description: Stock del producto
+      example:
+      _id: ObjectId('1235gvvs432')
+      name: Crema hidratante
+      size: 100ml
+      price: 1000
+      stock: 50
+
+
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos de la base de datos
+      tags:
+         - Products 
+      responses:
+        "200":
+          description: Los productos se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:  
+                  $ref: '#/components/schemas/Product'
+    
+    
+    

@@ -9,6 +9,9 @@ import MongoStore from 'connect-mongo';
 import initializePassport from "./config/passport.config.js";
 import passport from "passport";
 import config from './config/process.config.js'
+import { specs } from "./config/swagger.config.js";
+import swaggerUIExpress from 'swagger-ui-express'
+
 
  let admin = true
 
@@ -19,6 +22,7 @@ const PORT = config.app.PORT;
 const server = app.listen(PORT, ()=>{
     console.log(`listening on port ${PORT}`);
 });
+
 
 app.use(cors())
 app.use(express.json());
@@ -41,14 +45,13 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+//doc
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 
 //routes
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/sessions', sessionsRouter);
-
-
 
 
 export default admin

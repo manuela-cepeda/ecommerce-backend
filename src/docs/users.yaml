@@ -1,0 +1,40 @@
+components:
+  schemas:
+    User:
+      Type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongo
+        name:
+          type: String
+          description: Nombre completo del usuario
+        email:
+          type: String
+          description: email del usuario 
+        password:
+          tpye: String
+          description: Contraseña hasheada del usuario
+      example:
+      _id: ObjectId('1235gvvs432')
+      name: Manuela Cepeda
+      email: manu@correo.com
+      password: 124edv3433
+
+paths:
+  /api/users/:
+    get:
+      summary: Obtiene todos los usuarios de la base de datos
+      tags:
+         - Users 
+      responses:
+        "200":
+          description: Los usuarios se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:  
+                  $ref: '#/components/schemas/User'
+    
+    
