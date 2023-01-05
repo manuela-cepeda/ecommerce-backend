@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from 'passport'; 
 import sessionController from "../controllers/session.controller.js";
-import  {verifyToken} from "../middlewares/veryfytoken.js";
+import  {verifyToken} from "../middlewares/verifyToken.js";
 
 
 const router = Router();

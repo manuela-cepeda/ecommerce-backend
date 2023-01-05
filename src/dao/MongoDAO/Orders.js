@@ -5,11 +5,7 @@ import MongoDBContainer from "./MongoContainer.js";
 
 const collection = 'orders';
 const cartsSchema = mongoose.Schema ({
-    buyer: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'registeredUsers',
-         require: true
-    },
+    buyer:{type: String, require: true}, 
     products: {type: Array, require: true},
     total:{type:Number, require: true}
 },{timestamps:true})

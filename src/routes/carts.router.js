@@ -1,9 +1,12 @@
 import { Router } from "express";
 import cartsController from "../controllers/carts.controller.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = Router();
 
 router.get('/', cartsController.getCarts)
+
+router.get('/mycart/:uid', cartsController.getCartByUser)
 
 router.get('/:cid/products', cartsController.getCartProducts )
 

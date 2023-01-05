@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import multer from 'multer';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer'
+import config from './config/process.config.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,7 +32,7 @@ export const transporter = nodemailer.createTransport({
     port: 587,
     auth: {
         user: 'manulcepeda@gmail.com',
-        pass: '' //chequear
+        pass: config.google.PASS_NODEMAILER
     }
 });
 

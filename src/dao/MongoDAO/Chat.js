@@ -17,4 +17,6 @@ export default class Chat extends MongoDBContainer{
         super(collection,productsSchema)
     }
 
+    
+
 }
