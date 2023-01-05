@@ -16,12 +16,16 @@ export default class ProductsRepository {
         return this.dao.getAll()
     };
 
+    getByCategory = async (category) => {
+        return this.dao.getByCategory(category)
+    };
+
     getById = async (id) => {
         return this.dao.getById(id)
     };
 
     deleteById = async (id) => {
-        return this.dao.deleteById(id)
+        return  this.dao.deleteById(id)
     };
 
     update = async (product) => {

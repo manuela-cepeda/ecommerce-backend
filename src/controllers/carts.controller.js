@@ -1,4 +1,7 @@
-import { cartsService, productsService } from "../services/services.js";
+import { cartsService, productsService, usersService } from "../services/services.js";
+
+import pkg from 'mongoose';
+const { isValidObjectId } = pkg;
 
 
 const getCarts = async(req,res)=>{
@@ -6,8 +9,11 @@ const getCarts = async(req,res)=>{
     res.send(carts)
  }
 
+
  const getCartProducts = async (req,res)=>{
     let cid = req.params.cid
+    const isValid = isValidObjectId(cid)
+    if (!isValid) return res.status(400).send({error:"is not a valid id"}) 
     let cart = await cartsService.getById(cid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"});
     if(cart.products == [] ) return res.status(400).send({error:"cart is empty"});
@@ -28,34 +34,44 @@ const createCart =  async (req,res)=>{
     res.send(cart)    
 }
 
-const addProductCart =  async (req,res)=>{  
+const addProductCart =   async (req,res)=>{  
     let cid = req.params.cid
-    const {pid, qty} = req.body;
-    if(!pid || !qty) return res.status(400).send({error:"invalid"});     
+    const isValid = isValidObjectId(cid)
+    if (!isValid) return res.status(400).send({error:"is not a valid id"}) 
     let cart = await cartsService.getById(cid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"});  
-     let product = await productsService.getById(pid)
-    if(product ===undefined) return res.status(400).send({error:"product doesn't exist"});  
-    await cartsService.addProductCart(cid, pid, qty)
-    res.send({status:'success',message:'successfully saved into the cart'}) 
+    const products = req.body;
+    products.forEach(async ({pid, qty}) => {
+         if(!pid || !qty) return res.status(400).send({error:`invalid input`});     
+         let product = await productsService.getById(pid)
+        if(product ===undefined) return res.status(400).send({error:`product ${pid} doesn't exist` });  
+        await cartsService.addProductCart(cid, pid, qty)
+    });
+    res.send({status:'success', message: 'product added'})
 }
 
 const deleteProductCart = async (req,res)=>{
     let cid = req.params.cid
+    const isValidCart = isValidObjectId(cid)
+    if (!isValidCart) return res.status(400).send({error:"is not a valid cart id"}) 
     let pid = req.params.pid
+    const isValidProduct = isValidObjectId(pid)
+    if (!isValidProduct) return res.status(400).send({error:"is not a valid product id"}) 
     let cart = await cartsService.getById(cid)
     let product = cart?.products.find(item => item.pid === pid)
     if(cart == undefined ) return res.status(400).send({error:"cart doesn't exist"})   
     if(product == undefined ) return res.status(400).send({error:"product doesn't exist"})
     await cartsService.deleteProductCart(cid,pid)
-    res.send({status:'success',message:'successfully deleted from cart'})
+    res.send({status:'success', message: 'product deleted'})
  
 }
 
 const deleteCart = async (req,res)=>{
     let cid = req.params.cid
+    const isValid = isValidObjectId(cid)
+    if (!isValid) return res.status(400).send({error:"is not a valid id"}) 
     await cartsService.deleteById(cid)
-    res.send({status:'success', message: 'product deleted'})
+    res.send({status:'success', message: 'cart deleted'})
    
 }
 

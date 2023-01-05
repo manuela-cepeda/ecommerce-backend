@@ -4,6 +4,8 @@ import productsController from "../controllers/products.controller.js";
 const router = Router();
 
 router.get('/', productsController.getProducts )
+
+router.get('/category/:category', productsController.getProductsByCategory)
  
  router.get('/:id', productsController.getProductById)
 

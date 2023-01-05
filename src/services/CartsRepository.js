@@ -12,6 +12,7 @@ export default class CartsRepository {
         return this.dao.getById(id)
     };
 
+
     deleteById = async (id) => {
         return this.dao.deleteById(id)
     };
@@ -32,7 +33,6 @@ export default class CartsRepository {
                     if(item.pid === pid){
                         let condition = (item.qty += qty)                        
                             item.qty = condition
-                        
                     }
                 }
             }else{

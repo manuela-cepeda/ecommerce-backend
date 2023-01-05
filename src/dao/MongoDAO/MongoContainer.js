@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import config from '../../config/process.config.js'
+ 
 
-mongoose.connect(config.mongo.MONGO_URL
-, err=>{
+mongoose.connect(config.mongo.MONGO_URL, err=>{
     if (err) throw new Error(`error conexion mongo atlas ${err}`)
     console.log('base conectada')
 })
@@ -16,18 +16,25 @@ export default class MongoDBContainer{
     getAll = async () => {      
         let results = await this.model.find();
         return results
-  
     }
-    
+
+    getByCategory = async (category) => {
+        let results = await this.model.find({  category: category });
+        return results;
+    }
+
     getById = async (id) => {
-        let results = await this.model.findOne({   _id : id });
-        console.log( )
+            let results = await this.model.findOne({  _id : id });
         return results;
     };
   
     save = async (document)=> {
-        let results = await this.model.create(document);
-        return results;
+        try {
+            return await this.model.create(document);
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
     update = async ( modifiedItem) => {
@@ -37,8 +44,11 @@ export default class MongoDBContainer{
     };
 
     deleteById = async (id) => {
-        let results = await this.model.deleteOne({ _id : id });
-        return results;
+        try {
+            return await this.model.deleteOne({ _id : id });
+        } catch (error) {
+            console.log(error)
+        }
     };
   
     getByEmail = async (email) => {
