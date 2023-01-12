@@ -41,7 +41,8 @@ app.use(passport.initialize());
 //websocket
 const io = new SocketServer(server, {
     cors:{
-        origin: config.app.CLIENT_URL
+        // origin: config.app.CLIENT_URL
+        origin: 'https://manuela-cepeda.github.io'
     }
 })
 
