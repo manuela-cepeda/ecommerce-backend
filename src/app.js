@@ -15,7 +15,6 @@ import cartsRouter from "./routes/carts.router.js";
 import sessionsRouter from "./routes/sessions.router.js";
 import ordersRouter from "./routes/orders.router.js";
 import viewsRouter from "./routes/views.router.js";
-import config from "./config/process.config.js";
 
 
 // express
