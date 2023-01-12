@@ -15,6 +15,7 @@ import cartsRouter from "./routes/carts.router.js";
 import sessionsRouter from "./routes/sessions.router.js";
 import ordersRouter from "./routes/orders.router.js";
 import viewsRouter from "./routes/views.router.js";
+import config from "./config/process.config.js";
 
 
 // express
@@ -38,11 +39,10 @@ app.set('view engine','handlebars');
 initializePassport();
 app.use(passport.initialize());
 
-
 //websocket
 const io = new SocketServer(server, {
     cors:{
-        origin: 'http://localhost:3000'
+        origin: config.app.CLIENT_URL
     }
 })
 
