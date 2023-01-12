@@ -3,13 +3,9 @@ import MongoDBContainer from "./MongoContainer.js";
 
 const collection = 'chat';
 const productsSchema = mongoose.Schema ({
-    authorId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'registeredUsers',
-         require: true
-        },
-    authorName: {type: String, require: true},
-    msg: {type: String, require: true}, 
+    userId: {type: String, require: true},
+    username: {type: Array, require: true},
+    messages: {type: Array, require: true}, 
 },{timestamps:true})
 
 export default class Chat extends MongoDBContainer{
@@ -17,6 +13,9 @@ export default class Chat extends MongoDBContainer{
         super(collection,productsSchema)
     }
 
-    
+    getByUserId = async (userId) => {
+        let results = await this.model.findOne({  userId : userId });
+    return results;
+    }
 
 }

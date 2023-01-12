@@ -11,7 +11,8 @@ const userSchema = mongoose.Schema ({
     age:  {type: String, require: true}, 
     tel:  {type: String, require: true}, 
     // avatar:  {type: String, require: true},  //url
-    password:  {type: String, require: true}  
+    password:  {type: String, require: true},
+    role:  {type: String }  
 },{timestamps:true})
 
 export default class User extends MongoDBContainer{

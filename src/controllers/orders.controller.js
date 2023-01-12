@@ -1,6 +1,5 @@
 import pkg from 'mongoose';
 import logger from "../config/pino.config.js";
-import admin from '../app.js'
 import { ordersService } from '../services/services.js';
 import { transporter } from '../utils.js';
 
@@ -54,7 +53,6 @@ const getOrders =  async(req,res)=> {
 
  const deleteOrderById =  async (req,res)=>{
    try {
-      if(!admin)  return res.status(401).send({error:  "method 'DELETE' no authorized"})
      const id = req.params.id
      const isValid = isValidObjectId(id)
      if (!isValid) return res.status(400).send({error:"is not a valid id"}) 

@@ -38,11 +38,12 @@ const registerFail = (req,res)=>{
 const login = async (req, res, next) => {
     try {       
         if(!req.user)  res.status(500).send({success: false, status:"error",error:"Error in login "})
-       
+        
         const loginUser = {
             id: req.user?._id,
             name: req.user?.name,
-            email: req.user?.email
+            email: req.user?.email,
+            role: req.user?.role
         } 
         const token = jwt.sign(loginUser, config.jwt.SECRET, {expiresIn:100})
         res.cookie(config.jwt.COOKIE, token, {maxAge:300000, httpOnly:true}).status(200)

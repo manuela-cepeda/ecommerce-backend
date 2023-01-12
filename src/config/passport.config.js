@@ -13,7 +13,7 @@ const initializePassport = () => {
     passport.use('register', new LocalStrategy({passReqToCallback: true, usernameField: 'email', session:false}, 
     async(req, email, password, done)=>{
         try {
-            const {name, lastName, age, adress, tel } = req.body
+            const {name, lastName, age, adress, tel, role } = req.body
             if(!name || !lastName || !email || !password || !age || !adress || !tel) return done (null, false, {message:"incomplete values"})
              let user = await usersService.getByEmail(email) 
              if(user) return  done (null, false, {message:"user alredy exists"})
@@ -24,7 +24,8 @@ const initializePassport = () => {
                 tel,
                 adress,
                 age,
-                password: createHash(password)
+                password: createHash(password),
+                role: role
             }
             let result = await usersService.save(newUser)
             return done(null, result)

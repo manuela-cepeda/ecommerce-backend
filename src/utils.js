@@ -22,7 +22,7 @@ export function  codeGenerator  (products)  {
     let code = ''
     do {
         code = Math.random().toString(36).substring(5)
-    } while (products.find(item => item.code === code))
+    } while (products.find(item => item.code || item.room === code))
     return code
 }
 

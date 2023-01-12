@@ -1,22 +1,40 @@
 import logger from '../config/pino.config.js';
-import { chatService } from '../services/services.js';
 
-
-let messages = await chatService.getAll();
+//chat sin persistencia en memoria, intentando trabajar con distintas conversaciones (en proceso)
 
 const initializeSocket = (io) =>{
     try{
-        io.on('connection', socket=> { 
-       
-            // console.log('cliente conectado en socket' + socket.id)   
-            // socket.broadcast.emit('newUser')
-             socket.emit('messages',  messages );
-        
-            socket.on('new-message',async (data) => {
-                await chatService.createChat(data)
-                let allMessages = await  chatService.getAll();
-                io.emit('messages', allMessages);
-            });
+        io.on('connection', async socket=> { 
+            
+         // notify existing users
+        socket.broadcast.emit("user connected", {
+            userId: socket.id,
+            username:  socket.handshake.auth.author,
+            messages: []
+          });
+
+            const users = []; 
+            for (let [id, socket] of io.of("/").sockets) {
+              const newUser = {
+                userId: id,
+                username:  socket.handshake.auth.author,
+                messages: []
+              }
+              users.push(newUser);
+              }
+            socket.emit("users", users);
+
+            socket.on("private-message", ({ msg, to }) => {
+                socket.to(to).emit("private-message", {
+                  msg,
+                  from: socket.id,
+                });
+              })
+
+              socket.on("disconnect", async () => {
+                  socket.broadcast.emit("user-disconnected", {userId: socket.id});
+              });
+
         })
     }catch(err){
         logger.error(` ${err.message}`); 

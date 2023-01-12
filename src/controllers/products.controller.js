@@ -1,6 +1,5 @@
 import pkg from 'mongoose';
 import logger from "../config/pino.config.js";
-import admin from '../app.js'
 import { productsService } from '../services/services.js';
 
 const { isValidObjectId } = pkg;
@@ -37,9 +36,11 @@ const getProducts =  async(req,res)=> {
     }
  }
 
- const createProduct = async(req,res)=> {   
+ const createProduct = async(req,res)=> { 
+    const {role} = req.user  
+    
     try {
-        if(!admin)  return res.status(401).send({error: "method 'POST' no authorized"})
+        if(role !== 'admin')  return res.status(401).send({error: "method 'POST' no authorized"})
         const result = await productsService.createProduct(req.body);
         res.send(result)
     } catch (error) {
@@ -48,8 +49,9 @@ const getProducts =  async(req,res)=> {
  }
 
  const deleteProductById =  async (req,res)=>{
+    const {role} = req.user  
     try {
-        if(!admin)  return res.status(401).send({error:  "method 'DELETE' no authorized"})
+        if(role === 'admin')  return res.status(401).send({error:  "method 'DELETE' no authorized"})
        const id = req.params.id
        const isValid = isValidObjectId(id)
        if (!isValid) return res.status(400).send({error:"is not a valid id"}) 
@@ -63,8 +65,9 @@ const getProducts =  async(req,res)=> {
 }
 
 const updateProduct = async (req,res)=>{
+    const {role} = req.user  
     try {
-        if(!admin) return res.status(401).send({error:  "method 'UPDATE' no authorized"})
+        if(role === 'admin') return res.status(401).send({error:  "method 'UPDATE' no authorized"})
         let product= req.body
         product.id = req.params.id
         const isValid = isValidObjectId(product.id)

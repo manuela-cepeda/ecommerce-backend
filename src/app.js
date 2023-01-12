@@ -16,7 +16,6 @@ import sessionsRouter from "./routes/sessions.router.js";
 import ordersRouter from "./routes/orders.router.js";
 import viewsRouter from "./routes/views.router.js";
 
-let admin = true //crear usuario admin
 
 // express
 const app = express();
@@ -46,6 +45,7 @@ const io = new SocketServer(server, {
         origin: 'http://localhost:3000'
     }
 })
+
 initializeSocket(io)
 
 //docs
@@ -58,6 +58,5 @@ app.use('/api/carts', cartsRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/orders', ordersRouter);
 
-export default admin
 
 
