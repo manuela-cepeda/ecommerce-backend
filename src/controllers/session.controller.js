@@ -64,9 +64,8 @@ const loginGoogle =  (req,res)=>{
           email: req.user?.email
       } 
       const token = jwt.sign(loginUser, config.jwt.SECRET, {expiresIn:300})
-      
-      res.cookie(config.jwt.COOKIE, token, {maxAge:30000  }) 
-      res.redirect(config.app.CLIENT_URL)
+    //   res.cookie(config.jwt.COOKIE, token, {maxAge:30000  }) 
+      res.redirect(`${config.app.CLIENT_URL}/?cookie=${token}`)
     } catch (error) {
         logger.error('error loginGoogle' + error)
     }
