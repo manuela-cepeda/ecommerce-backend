@@ -19,7 +19,7 @@ import viewsRouter from "./routes/views.router.js";
 
 // express
 const app = express();
-const PORT = config.app.PORT;
+const PORT = process.env.PORT || 8080;
 export const server = app.listen(PORT, ()=>{console.log(`listening on port ${PORT}`)});
 
 //common midldlewares
